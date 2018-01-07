@@ -1,5 +1,9 @@
+import sys
+
 import hashlib
 import json
+import requests
+import urllib.parse
 
 from time import time
 from uuid import uuid4
@@ -25,7 +29,7 @@ class Blockchain(object):
 		:return: None
 		"""
 
-		parsed_url = urlparse(address)
+		parsed_url = urllib.parse.urlparse(address)
 		self.nodes.add(parsed_url.netloc)
 
 	def new_block(self, proof, previous_hash=None):
@@ -274,4 +278,7 @@ def consensus():
 	return jsonify(response), 200
 
 if __name__ == '__main__':
-	app.run(host='0.0.0.0', port=5000)
+	port=5000
+	if len(sys.argv)>1:
+		port = int(sys.argv[1])
+	app.run(host='0.0.0.0', port=port)
